@@ -28,6 +28,17 @@ const CLAIM_TYPE_LABELS = {
 } as const
 
 export function ClaimDetailsSection() {
+  // Discussion point:
+  // Previously, we have used this code like destructuring the `useFormContext` return value to get `register`, `control`, and `errors` like this:
+  // const {
+  //   register,
+  //   control,
+  //   formState: { errors },
+  // } = useFormContext<InsuranceClaimFormInput>()
+
+  // But we find that if we use above code then it will not rerendering when the `errors` object changes. So we have to use `useFormState` hook to get the `errors` object which will rerender the component when the `errors` object changes.
+  // reference link: https://react-hook-form.com/docs/useformstate
+
   const { register, control } = useFormContext<InsuranceClaimFormInput>()
   const { errors } = useFormState({ control })
 
@@ -110,7 +121,9 @@ export function ClaimDetailsSection() {
               />
             )}
           />
-          <Label htmlFor="claim.policeReportFiled">A police report was filed</Label>
+          <Label htmlFor="claim.policeReportFiled">
+            A police report was filed
+          </Label>
         </div>
 
         {policeReportFiled ? (
@@ -131,7 +144,11 @@ export function ClaimDetailsSection() {
         {claimType ? (
           <>
             <Separator />
-            {claimType === 'auto' ? <AutoClaimFields /> : <PropertyClaimFields />}
+            {claimType === 'auto' ? (
+              <AutoClaimFields />
+            ) : (
+              <PropertyClaimFields />
+            )}
           </>
         ) : null}
       </CardContent>

@@ -55,6 +55,7 @@ const defaultValues: InsuranceClaimFormInput = {
 export function InsuranceClaimForm() {
   const [result, setResult] = useState<SubmitClaimResult | null>(null)
   const [submitError, setSubmitError] = useState<string | null>(null)
+  // const [counter, setCounter] = useState(0)
 
   const form = useForm<
     InsuranceClaimFormInput,
@@ -125,7 +126,13 @@ export function InsuranceClaimForm() {
             type="button"
             variant="outline"
             disabled={form.formState.isSubmitting}
-            onClick={() => form.reset(defaultValues)}
+            onClick={() => {
+              // discussion point:
+              // Here form.reset is not working as expected, it is not resetting the form values to defaultValues.
+              // Anyone knows about this scenario and how to fix it?
+              // setCounter((prev) => prev + 1)
+              form.reset(defaultValues)
+            }}
           >
             Reset
           </Button>
