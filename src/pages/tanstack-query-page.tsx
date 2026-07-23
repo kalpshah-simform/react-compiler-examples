@@ -1,5 +1,5 @@
 import { BackButton } from '@/components/back-button'
-import { PlaceholderPage } from '@/components/placeholder-page'
+import { TanstackQueryDemo } from '@/features/tanstack-query/components/tanstack-query-demo'
 
 export function TanstackQueryPage() {
   return (
@@ -8,7 +8,7 @@ export function TanstackQueryPage() {
         <BackButton />
       </div>
       <div className="flex-1">
-        <PlaceholderPage title="TanStack Query" />
+        <TanstackQueryDemo />
       </div>
     </div>
   )
