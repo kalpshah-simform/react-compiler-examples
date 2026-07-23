@@ -6,8 +6,8 @@ const navItems = [
   { to: paths.tanstackQuery, label: 'TanStack Query' },
   { to: paths.tanstackTable, label: 'TanStack Table' },
   { to: paths.reduxToolkit, label: 'Redux Toolkit' },
+  { to: paths.zustand, label: 'Zustand' },
   { to: paths.shadcnUi, label: 'Shadcn UI / Radix UI' },
-  { to: paths.dateFns, label: 'date-fns' },
   { to: paths.recharts, label: 'Recharts' },
   { to: paths.reactCompilerLab, label: 'React Compiler Lab' },
 ]

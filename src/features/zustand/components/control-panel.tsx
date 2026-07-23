@@ -1,21 +1,23 @@
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { useAppDispatch, useAppSelector } from '@/store/hooks'
-import { decremented, incremented, resetToZero } from '@/store/slices/counter-slice'
-import { switchedToNextUser } from '@/store/slices/user-slice'
-import { toggled } from '@/store/slices/theme-slice'
-import { added, cleared } from '@/store/slices/notifications-slice'
+import { useAppStore } from '@/features/zustand/store/use-app-store'
 import { RenderCountBadge } from '@/components/render-count-badge'
 import { useRenderCount } from '@/hooks/use-render-count'
 
 export function ControlPanel() {
-  const dispatch = useAppDispatch()
-  const counter = useAppSelector((state) => state.counter.value)
-  const user = useAppSelector((state) => state.user)
-  const theme = useAppSelector((state) => state.theme.mode)
-  const notificationCount = useAppSelector(
-    (state) => state.notifications.items.length,
-  )
+  const counter = useAppStore((state) => state.counter)
+  const user = useAppStore((state) => state.user)
+  const theme = useAppStore((state) => state.theme)
+  const notificationCount = useAppStore((state) => state.notifications.length)
+
+  const increment = useAppStore((state) => state.increment)
+  const decrement = useAppStore((state) => state.decrement)
+  const reset = useAppStore((state) => state.reset)
+  const switchUser = useAppStore((state) => state.switchUser)
+  const toggleTheme = useAppStore((state) => state.toggleTheme)
+  const addNotification = useAppStore((state) => state.addNotification)
+  const clearNotifications = useAppStore((state) => state.clearNotifications)
+
   const renderCount = useRenderCount()
 
   console.log('[render] ControlPanel', { counter, user, theme, notificationCount })
@@ -23,7 +25,7 @@ export function ControlPanel() {
   return (
     <Card>
       <CardHeader className="flex-row items-center justify-between">
-        <CardTitle>Update Redux State</CardTitle>
+        <CardTitle>Update Zustand State</CardTitle>
         <RenderCountBadge count={renderCount} />
       </CardHeader>
       <CardContent className="grid gap-4">
@@ -32,13 +34,13 @@ export function ControlPanel() {
             Counter: <span className="font-medium text-foreground">{counter}</span>
           </p>
           <div className="flex gap-2">
-            <Button size="sm" onClick={() => dispatch(incremented())}>
+            <Button size="sm" onClick={increment}>
               Increment
             </Button>
-            <Button size="sm" variant="outline" onClick={() => dispatch(decremented())}>
+            <Button size="sm" variant="outline" onClick={decrement}>
               Decrement
             </Button>
-            <Button size="sm" variant="ghost" onClick={() => dispatch(resetToZero())}>
+            <Button size="sm" variant="ghost" onClick={reset}>
               Reset
             </Button>
           </div>
@@ -51,11 +53,7 @@ export function ControlPanel() {
               {user.name} ({user.role})
             </span>
           </p>
-          <Button
-            size="sm"
-            variant="outline"
-            onClick={() => dispatch(switchedToNextUser())}
-          >
+          <Button size="sm" variant="outline" onClick={switchUser}>
             Switch User
           </Button>
         </div>
@@ -64,7 +62,7 @@ export function ControlPanel() {
           <p className="text-sm text-muted-foreground">
             Theme: <span className="font-medium text-foreground">{theme}</span>
           </p>
-          <Button size="sm" variant="outline" onClick={() => dispatch(toggled())}>
+          <Button size="sm" variant="outline" onClick={toggleTheme}>
             Toggle Theme
           </Button>
         </div>
@@ -75,10 +73,10 @@ export function ControlPanel() {
             <span className="font-medium text-foreground">{notificationCount}</span>
           </p>
           <div className="flex gap-2">
-            <Button size="sm" onClick={() => dispatch(added())}>
+            <Button size="sm" onClick={addNotification}>
               Add Notification
             </Button>
-            <Button size="sm" variant="ghost" onClick={() => dispatch(cleared())}>
+            <Button size="sm" variant="ghost" onClick={clearNotifications}>
               Clear
             </Button>
           </div>
