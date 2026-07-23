@@ -42,17 +42,17 @@ export const router = createBrowserRouter([
         },
       },
       {
+        path: paths.zustand,
+        lazy: async () => {
+          const { ZustandPage } = await import('@/pages/zustand-page')
+          return { Component: ZustandPage }
+        },
+      },
+      {
         path: paths.shadcnUi,
         lazy: async () => {
           const { ShadcnUiPage } = await import('@/pages/shadcn-ui-page')
           return { Component: ShadcnUiPage }
-        },
-      },
-      {
-        path: paths.dateFns,
-        lazy: async () => {
-          const { DateFnsPage } = await import('@/pages/date-fns-page')
-          return { Component: DateFnsPage }
         },
       },
       {

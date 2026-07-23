@@ -1,13 +1,12 @@
 import { useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { useAppSelector } from '@/store/hooks'
-import type { RootState } from '@/store'
+import { useAppStore, type AppState } from '@/features/zustand/store/use-app-store'
 import {
   NESTING_DEPTH,
   SUBSCRIPTION_LABELS,
   SUBSCRIPTION_OPTIONS,
   type SubscriptionKey,
-} from '@/features/redux-toolkit/types'
+} from '@/features/zustand/types'
 import { RenderCountBadge } from '@/components/render-count-badge'
 import { SubscriptionSelect } from '@/components/subscription-select'
 import { PropsOnlyChild } from '@/components/props-only-child'
@@ -18,30 +17,42 @@ interface NestedLevelProps {
 }
 
 function selectSubscribedValue(subscribeTo: SubscriptionKey) {
-  return (state: RootState) => {
+  return (state: AppState) => {
     switch (subscribeTo) {
+      // No selector at all (an identity selector behaves the same way):
+      // this component re-renders on every store update, whether or not the
+      // change is relevant to it.
+      case 'whole-store':
+        return state
       case 'counter':
-        return state.counter.value
+        return state.counter
       case 'user':
         return `${state.user.name} (${state.user.role})`
       case 'theme':
-        return state.theme.mode
+        return state.theme
       case 'notifications':
-        return state.notifications.items.length
+        return state.notifications.length
       case 'none':
         return null
     }
   }
 }
 
+function formatSubscribedValue(value: AppState | string | number | null) {
+  if (value !== null && typeof value === 'object') {
+    return `counter=${value.counter}, user=${value.user.name}, theme=${value.theme}, notifications=${value.notifications.length}`
+  }
+  return typeof value === 'number' ? value.toString() : (value ?? '')
+}
+
 export function NestedLevel({ level }: NestedLevelProps) {
   const [subscribeTo, setSubscribeTo] = useState<SubscriptionKey>('none')
   const renderCount = useRenderCount()
 
-  // Always calls useSelector (stable hook order); only the selector's branch
+  // Always calls useAppStore (stable hook order); only the selector's branch
   // changes with `subscribeTo`, so toggling it in the UI never violates the
-  // rules of hooks the way conditionally calling useSelector would.
-  const subscribedValue = useAppSelector(selectSubscribedValue(subscribeTo))
+  // rules of hooks the way conditionally calling the hook would.
+  const subscribedValue = useAppStore(selectSubscribedValue(subscribeTo))
 
   console.log(`[render] Level ${level}`, { subscribeTo, subscribedValue })
 
@@ -62,7 +73,10 @@ export function NestedLevel({ level }: NestedLevelProps) {
           />
           {subscribeTo !== 'none' ? (
             <span className="text-sm">
-              value: <span className="font-medium">{String(subscribedValue)}</span>
+              value:{' '}
+              <span className="font-medium">
+                {formatSubscribedValue(subscribedValue)}
+              </span>
             </span>
           ) : null}
         </div>
