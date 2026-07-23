@@ -1,5 +1,5 @@
 import { BackButton } from '@/components/back-button'
-import { PlaceholderPage } from '@/components/placeholder-page'
+import { ReduxToolkitDemo } from '@/features/redux-toolkit/components/redux-toolkit-demo'
 
 export function ReduxToolkitPage() {
   return (
@@ -8,7 +8,7 @@ export function ReduxToolkitPage() {
         <BackButton />
       </div>
       <div className="flex-1">
-        <PlaceholderPage title="Redux Toolkit" />
+        <ReduxToolkitDemo />
       </div>
     </div>
   )
