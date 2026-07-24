@@ -7,5 +7,4 @@ export const paths = {
   zustand: '/zustand',
   shadcnUi: '/shadcn-ui',
   recharts: '/recharts',
-  reactCompilerLab: '/react-compiler-lab',
 } as const

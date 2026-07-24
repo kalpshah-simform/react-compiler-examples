@@ -9,15 +9,12 @@ const navItems = [
   { to: paths.zustand, label: 'Zustand' },
   { to: paths.shadcnUi, label: 'Shadcn UI / Radix UI' },
   { to: paths.recharts, label: 'Recharts' },
-  { to: paths.reactCompilerLab, label: 'React Compiler Lab' },
 ]
 
 export function DashboardPage() {
   return (
     <div className="p-6">
-      <h1 className="mb-6 text-2xl font-semibold text-foreground">
-        Dashboard
-      </h1>
+      <h1 className="mb-6 text-2xl font-semibold text-foreground">Dashboard</h1>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {navItems.map((item) => (
           <NavLink

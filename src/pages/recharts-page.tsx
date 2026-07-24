@@ -1,5 +1,5 @@
 import { BackButton } from '@/components/back-button'
-import { PlaceholderPage } from '@/components/placeholder-page'
+import { RechartsDemo } from '@/features/recharts/components/recharts-demo'
 
 export function RechartsPage() {
   return (
@@ -8,7 +8,7 @@ export function RechartsPage() {
         <BackButton />
       </div>
       <div className="flex-1">
-        <PlaceholderPage title="Recharts" />
+        <RechartsDemo />
       </div>
     </div>
   )
