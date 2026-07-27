@@ -3,6 +3,7 @@ import { defineConfig } from 'vite'
 import react, { reactCompilerPreset } from '@vitejs/plugin-react'
 import babel from '@rolldown/plugin-babel'
 import tailwindcss from '@tailwindcss/vite'
+import { analyzer } from 'vite-bundle-analyzer'
 
 // `compilationMode: 'all'` compiles every function in a matched file, not just
 // ones that look like components/hooks — restrict matching to `.tsx` (where
@@ -14,17 +15,22 @@ compilerPreset.rolldown.filter ??= {}
 compilerPreset.rolldown.filter.id = { include: [/\.tsx$/] }
 
 // https://vite.dev/config/
-export default defineConfig({
+export default defineConfig(({ command }) => ({
   plugins: [
     react(),
     babel({
       presets: [compilerPreset],
     }),
     tailwindcss(),
+    analyzer({
+      analyzerMode: 'static',
+      enabled: command === 'build',
+      openAnalyzer: false,
+    }),
   ],
   resolve: {
     alias: {
       '@': path.resolve(import.meta.dirname, './src'),
     },
   },
-})
+}))

@@ -5,13 +5,13 @@ import { BrowserShareBlock } from '@/features/shadcn-ui/components/browser-share
 import { CodespacesBlock } from '@/features/shadcn-ui/components/codespaces-block'
 import { CommandPaletteBlock } from '@/features/shadcn-ui/components/command-palette-block'
 import { ComponentPlaygroundBlock } from '@/features/shadcn-ui/components/component-playground-block'
+import { CounterIsolationBlock } from '@/features/shadcn-ui/components/counter-isolation-block'
 import { ContactFormBlock } from '@/features/shadcn-ui/components/contact-form-block'
 import { EnvironmentVariablesBlock } from '@/features/shadcn-ui/components/environment-variables-block'
 import { FaqBlock } from '@/features/shadcn-ui/components/faq-block'
 import { FileManagerBlock } from '@/features/shadcn-ui/components/file-manager-block'
 import { MediaGalleryBlock } from '@/features/shadcn-ui/components/media-gallery-block'
 import { SchedulerBlock } from '@/features/shadcn-ui/components/scheduler-block'
-import { SecurityBlock } from '@/features/shadcn-ui/components/security-block'
 import { SettingsDrawerBlock } from '@/features/shadcn-ui/components/settings-drawer-block'
 import { TeamMembersBlock } from '@/features/shadcn-ui/components/team-members-block'
 import { TrafficChartBlock } from '@/features/shadcn-ui/components/traffic-chart-block'
@@ -52,10 +52,10 @@ export function ShadcnUiDemo() {
           <AppearanceBlock />
         </div>
         <div className="mb-4 break-inside-avoid">
-          <SecurityBlock />
+          <ComponentPlaygroundBlock />
         </div>
         <div className="mb-4 break-inside-avoid">
-          <ComponentPlaygroundBlock />
+          <CounterIsolationBlock />
         </div>
         <div className="mb-4 break-inside-avoid">
           <ContactFormBlock />
