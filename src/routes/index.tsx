@@ -62,14 +62,6 @@ export const router = createBrowserRouter([
           return { Component: RechartsPage }
         },
       },
-      {
-        path: paths.reactCompilerLab,
-        lazy: async () => {
-          const { ReactCompilerLabPage } =
-            await import('@/pages/react-compiler-lab-page')
-          return { Component: ReactCompilerLabPage }
-        },
-      },
     ],
   },
 ])
