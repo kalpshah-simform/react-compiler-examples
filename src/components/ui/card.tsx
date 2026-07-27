@@ -7,6 +7,7 @@ function Card({
   size = "default",
   ...props
 }: React.ComponentProps<"div"> & { size?: "default" | "sm" }) {
+  console.log("Card component rendered with size:", size) // Debugging line to check the size prop
   return (
     <div
       data-slot="card"

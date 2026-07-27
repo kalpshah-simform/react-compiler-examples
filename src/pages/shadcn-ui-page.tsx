@@ -1,5 +1,5 @@
 import { BackButton } from '@/components/back-button'
-import { PlaceholderPage } from '@/components/placeholder-page'
+import { ShadcnUiDemo } from '@/features/shadcn-ui/components/shadcn-ui-demo'
 
 export function ShadcnUiPage() {
   return (
@@ -8,7 +8,7 @@ export function ShadcnUiPage() {
         <BackButton />
       </div>
       <div className="flex-1">
-        <PlaceholderPage title="Shadcn UI / Radix UI" />
+        <ShadcnUiDemo />
       </div>
     </div>
   )
