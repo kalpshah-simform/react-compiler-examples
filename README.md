@@ -1,32 +1,52 @@
-# React + TypeScript + Vite
+# React Compiler Examples
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+A Vite + React 19 + TypeScript playground for exploring the [React Compiler](https://react.dev/learn/react-compiler) across common real-world patterns: forms, data tables, server state, global state, charts, and shadcn/ui component composition.
 
-Currently, two official plugins are available:
+The React Compiler is enabled via `babel-plugin-react-compiler` in [vite.config.ts](vite.config.ts) (through `@rolldown/plugin-babel` and `reactCompilerPreset()`), so every example in this repo is auto-memoized by the compiler rather than hand-tuned with `useMemo`/`useCallback`.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Getting started
 
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```bash
+npm install
+npm run dev
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+Other scripts:
+
+- `npm run build` — type-check with `tsc -b` and build with Vite (bundle analyzer report opens after build)
+- `npm run lint` — run ESLint (includes `eslint-plugin-react-compiler` and `eslint-plugin-react-hooks`)
+- `npm run format` / `npm run format:check` — Prettier
+- `npm run preview` — preview the production build
+
+## Examples
+
+Each route under `/src/pages` demonstrates the compiler working alongside a different library/pattern:
+
+| Route | Page | Demonstrates |
+| --- | --- | --- |
+| `/` | Dashboard | Landing page / navigation |
+| `/react-hook-form` | React Hook Form | Multi-section insurance claim form with `react-hook-form` + `zod` validation |
+| `/tanstack-query` | TanStack Query | Server-state fetching, including a "broken" vs. "fixed" comparison |
+| `/tanstack-table` | TanStack Table | Data table with column filtering, faceted filters, and pagination |
+| `/redux-toolkit` | Redux Toolkit | Global state with slices and nested component re-render behavior |
+| `/zustand` | Zustand | Lightweight global state store and nested component re-render behavior |
+| `/shadcn-ui` | shadcn/ui | A gallery of composed shadcn/ui blocks (dialogs, drawers, command palette, scheduler, file manager, etc.) |
+| `/recharts` | Recharts | Various chart types (bar, line, area, pie) with a shared control panel |
+
+## Project structure
+
+```
+src/
+  components/       Shared UI primitives (shadcn/ui) and reusable widgets
+  features/         Feature-scoped code (components, api, types) per example
+  hooks/            Shared hooks (e.g. render-count tracking)
+  layouts/          App shell (header, layout)
+  pages/            Route-level page components
+  routes/           React Router route definitions and path constants
+  store/            Redux Toolkit store and slices
+```
+
+## Notes
+
+- Dev/build performance impact of the React Compiler is expected to be more noticeable than in a template without it — this repo intentionally keeps it on to demonstrate compiler behavior, not to optimize build speed.
+- `vite-bundle-analyzer` runs on `npm run build` to inspect bundle composition.
