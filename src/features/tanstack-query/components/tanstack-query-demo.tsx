@@ -4,6 +4,11 @@ import { queryClient } from '@/features/tanstack-query/query-client'
 import { CountriesBroken } from '@/features/tanstack-query/components/countries-broken'
 import { CountriesFixed } from '@/features/tanstack-query/components/countries-fixed'
 
+// Discussion point:
+// In the below code we have two panels one is broken and another is fixed. Both panels are rendering the same countries table backed by useQuery/useMutation (each with its own query key, so they don't share a cache entry). The only difference is where the row lives: in the broken panel it's mapped inline in the same component that owns the input state; in the fixed panel it's extracted into its own CountryRow component.
+// Open the console. In the broken panel, typing or clicking Add/Delete re-renders every row and every table cell each time. In the fixed panel, typing doesn't log a single row since countries hasn't changed reference, so the memoized row list is reused entirely. Add/Delete always re-invoke CountryRow for every row (the array reference always changes), but only the affected row's NameCell/DeleteActionCell actually re-renders — the rest reuse their previous memoized output.
+// why this is happening? and how to fix this issue?
+// reference: https://www.developerway.com/posts/i-tried-react-compiler#so-whats-the-verdict
 export function TanstackQueryDemo() {
   return (
     <QueryClientProvider client={queryClient}>

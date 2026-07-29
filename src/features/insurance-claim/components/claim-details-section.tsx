@@ -36,9 +36,12 @@ export function ClaimDetailsSection() {
   //   formState: { errors },
   // } = useFormContext<InsuranceClaimFormInput>()
 
-  // But we find that if we use above code then it will not rerendering when the `errors` object changes. So we have to use `useFormState` hook to get the `errors` object which will rerender the component when the `errors` object changes.
-  // reference link: https://react-hook-form.com/docs/useformstate
-
+  // With React Compiler enabled, destructuring `formState.errors` directly from
+  // `useFormContext` does not trigger a rerender when `errors` changes, because RHF's
+  // formState Proxy needs to be read on every render to keep its subscription alive,
+  // and the compiler can skip re-executing this component when it memoizes it.
+  // `useFormState` uses an external store subscription instead, which stays compatible
+  // with the compiler's memoization. reference: https://react-hook-form.com/docs/useformstate
   const { register, control } = useFormContext<InsuranceClaimFormInput>()
   const { errors } = useFormState({ control })
 

@@ -7,7 +7,7 @@ import { FormField } from '@/features/insurance-claim/components/form-field'
 import type { InsuranceClaimFormInput } from '@/features/insurance-claim/schema'
 
 // Discussion point:
-// We have problem in this component like when we click on input and move away (blur effect) then it is showing the error message for that input field for first row. But when we click on add item button then it is not showing the error message for the inputs correctly. So, i want to know about this scenario and how to fix it.
+// Without react compiler this damaged items section component is working fine. But when we enable the react compiler then it is not showing the error message for the input fields correctly when we click on add item button. So, anyone can explain this scenario and how to fix it.
 export function DamagedItemsSection() {
   const { register, control } = useFormContext<InsuranceClaimFormInput>()
   const { errors } = useFormState({ control })
