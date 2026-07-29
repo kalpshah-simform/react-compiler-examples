@@ -19,6 +19,46 @@ import {
   type InsuranceClaimFormValues,
 } from '@/features/insurance-claim/schema'
 
+const sampleValues: InsuranceClaimFormInput = {
+  policyholder: {
+    fullName: 'Jordan Avery',
+    email: 'jordan.avery@example.com',
+    phone: '+15551234567',
+    policyNumber: 'POL-2024-9981',
+    dateOfBirth: '1990-05-14',
+  },
+  claim: {
+    claimType: 'auto',
+    incidentDate: '2026-07-01',
+    incidentDescription:
+      'Rear-ended at a stop light while waiting to turn; bumper and trunk sustained damage.',
+    policeReportFiled: true,
+    policeReportNumber: 'PR-445566',
+    vehicleMake: 'Toyota',
+    vehicleModel: 'Camry',
+    vehicleYear: '2019',
+    licensePlate: 'ABC-1234',
+    otherPartyInvolved: true,
+    otherParty: {
+      name: 'Sam Rivera',
+      phone: '+15559876543',
+      insuranceCompany: 'Acme Mutual Insurance',
+    },
+    propertyAddress: { street: '', city: '', state: '', zipCode: '' },
+    damageType: '',
+    estimatedRepairCost: '',
+  },
+  damagedItems: [{ description: 'Rear bumper', estimatedValue: '850' }],
+  witnesses: [
+    { name: 'Taylor Chen', phone: '+15552223333', statement: 'Saw the other car fail to stop in time.' },
+  ],
+  additional: {
+    contactPreference: 'email',
+    notes: 'Prefer to be contacted in the morning.',
+    agreeToTerms: true,
+  },
+}
+
 const defaultValues: InsuranceClaimFormInput = {
   policyholder: {
     fullName: '',
@@ -135,6 +175,16 @@ export function InsuranceClaimForm() {
             }}
           >
             Reset
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            disabled={form.formState.isSubmitting}
+            onClick={() => {
+              form.reset(sampleValues)
+            }}
+          >
+            Prefill Sample Data
           </Button>
         </div>
       </form>
