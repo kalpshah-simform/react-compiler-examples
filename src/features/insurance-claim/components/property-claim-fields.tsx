@@ -23,7 +23,7 @@ const DAMAGE_TYPE_LABELS: Record<(typeof DAMAGE_TYPES)[number], string> = {
 }
 
 export function PropertyClaimFields() {
-  const { register, control } = useFormContext<InsuranceClaimFormInput>()
+  const { control } = useFormContext<InsuranceClaimFormInput>()
   const { errors } = useFormState({ control })
 
   return (
@@ -36,9 +36,12 @@ export function PropertyClaimFields() {
           className="sm:col-span-2"
           error={errors.claim?.propertyAddress?.street?.message}
         >
-          <Input
-            id="claim.propertyAddress.street"
-            {...register('claim.propertyAddress.street')}
+          <Controller
+            control={control}
+            name="claim.propertyAddress.street"
+            render={({ field }) => (
+              <Input id="claim.propertyAddress.street" {...field} />
+            )}
           />
         </FormField>
 
@@ -48,9 +51,12 @@ export function PropertyClaimFields() {
           required
           error={errors.claim?.propertyAddress?.city?.message}
         >
-          <Input
-            id="claim.propertyAddress.city"
-            {...register('claim.propertyAddress.city')}
+          <Controller
+            control={control}
+            name="claim.propertyAddress.city"
+            render={({ field }) => (
+              <Input id="claim.propertyAddress.city" {...field} />
+            )}
           />
         </FormField>
 
@@ -60,11 +66,17 @@ export function PropertyClaimFields() {
           required
           error={errors.claim?.propertyAddress?.state?.message}
         >
-          <Input
-            id="claim.propertyAddress.state"
-            placeholder="CA"
-            maxLength={2}
-            {...register('claim.propertyAddress.state')}
+          <Controller
+            control={control}
+            name="claim.propertyAddress.state"
+            render={({ field }) => (
+              <Input
+                id="claim.propertyAddress.state"
+                placeholder="CA"
+                maxLength={2}
+                {...field}
+              />
+            )}
           />
         </FormField>
 
@@ -74,10 +86,16 @@ export function PropertyClaimFields() {
           required
           error={errors.claim?.propertyAddress?.zipCode?.message}
         >
-          <Input
-            id="claim.propertyAddress.zipCode"
-            placeholder="94105"
-            {...register('claim.propertyAddress.zipCode')}
+          <Controller
+            control={control}
+            name="claim.propertyAddress.zipCode"
+            render={({ field }) => (
+              <Input
+                id="claim.propertyAddress.zipCode"
+                placeholder="94105"
+                {...field}
+              />
+            )}
           />
         </FormField>
 
@@ -113,14 +131,20 @@ export function PropertyClaimFields() {
           required
           error={errors.claim?.estimatedRepairCost?.message}
         >
-          <Input
-            id="claim.estimatedRepairCost"
-            type="number"
-            inputMode="decimal"
-            min="0"
-            step="0.01"
-            placeholder="2500.00"
-            {...register('claim.estimatedRepairCost')}
+          <Controller
+            control={control}
+            name="claim.estimatedRepairCost"
+            render={({ field }) => (
+              <Input
+                id="claim.estimatedRepairCost"
+                type="number"
+                inputMode="decimal"
+                min="0"
+                step="0.01"
+                placeholder="2500.00"
+                {...field}
+              />
+            )}
           />
         </FormField>
       </div>

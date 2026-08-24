@@ -11,7 +11,7 @@ import { FormField } from '@/features/insurance-claim/components/form-field'
 import type { InsuranceClaimFormInput } from '@/features/insurance-claim/schema'
 
 export function AutoClaimFields() {
-  const { register, control } = useFormContext<InsuranceClaimFormInput>()
+  const { control } = useFormContext<InsuranceClaimFormInput>()
   const { errors } = useFormState({ control })
 
   const otherPartyInvolved = useWatch({
@@ -28,10 +28,12 @@ export function AutoClaimFields() {
           required
           error={errors.claim?.vehicleMake?.message}
         >
-          <Input
-            id="claim.vehicleMake"
-            placeholder="Toyota"
-            {...register('claim.vehicleMake')}
+          <Controller
+            control={control}
+            name="claim.vehicleMake"
+            render={({ field }) => (
+              <Input id="claim.vehicleMake" placeholder="Toyota" {...field} />
+            )}
           />
         </FormField>
 
@@ -41,10 +43,12 @@ export function AutoClaimFields() {
           required
           error={errors.claim?.vehicleModel?.message}
         >
-          <Input
-            id="claim.vehicleModel"
-            placeholder="Camry"
-            {...register('claim.vehicleModel')}
+          <Controller
+            control={control}
+            name="claim.vehicleModel"
+            render={({ field }) => (
+              <Input id="claim.vehicleModel" placeholder="Camry" {...field} />
+            )}
           />
         </FormField>
 
@@ -54,12 +58,18 @@ export function AutoClaimFields() {
           required
           error={errors.claim?.vehicleYear?.message}
         >
-          <Input
-            id="claim.vehicleYear"
-            type="number"
-            inputMode="numeric"
-            placeholder="2021"
-            {...register('claim.vehicleYear')}
+          <Controller
+            control={control}
+            name="claim.vehicleYear"
+            render={({ field }) => (
+              <Input
+                id="claim.vehicleYear"
+                type="number"
+                inputMode="numeric"
+                placeholder="2021"
+                {...field}
+              />
+            )}
           />
         </FormField>
 
@@ -69,7 +79,13 @@ export function AutoClaimFields() {
           required
           error={errors.claim?.licensePlate?.message}
         >
-          <Input id="claim.licensePlate" {...register('claim.licensePlate')} />
+          <Controller
+            control={control}
+            name="claim.licensePlate"
+            render={({ field }) => (
+              <Input id="claim.licensePlate" {...field} />
+            )}
+          />
         </FormField>
       </div>
 
@@ -98,9 +114,12 @@ export function AutoClaimFields() {
             required
             error={errors.claim?.otherParty?.name?.message}
           >
-            <Input
-              id="claim.otherParty.name"
-              {...register('claim.otherParty.name')}
+            <Controller
+              control={control}
+              name="claim.otherParty.name"
+              render={({ field }) => (
+                <Input id="claim.otherParty.name" {...field} />
+              )}
             />
           </FormField>
 
@@ -110,10 +129,12 @@ export function AutoClaimFields() {
             required
             error={errors.claim?.otherParty?.phone?.message}
           >
-            <Input
-              id="claim.otherParty.phone"
-              type="tel"
-              {...register('claim.otherParty.phone')}
+            <Controller
+              control={control}
+              name="claim.otherParty.phone"
+              render={({ field }) => (
+                <Input id="claim.otherParty.phone" type="tel" {...field} />
+              )}
             />
           </FormField>
 
@@ -123,9 +144,12 @@ export function AutoClaimFields() {
             required
             error={errors.claim?.otherParty?.insuranceCompany?.message}
           >
-            <Input
-              id="claim.otherParty.insuranceCompany"
-              {...register('claim.otherParty.insuranceCompany')}
+            <Controller
+              control={control}
+              name="claim.otherParty.insuranceCompany"
+              render={({ field }) => (
+                <Input id="claim.otherParty.insuranceCompany" {...field} />
+              )}
             />
           </FormField>
         </div>

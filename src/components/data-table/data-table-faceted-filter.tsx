@@ -1,4 +1,4 @@
-import type { Column } from '@tanstack/react-table'
+import type { Column, RowData } from '@tanstack/react-table'
 import { CirclePlus } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -11,6 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import type { ClaimsTableFeatures } from '@/features/claims/components/table-features'
 import { Separator } from '@/components/ui/separator'
 
 interface DataTableFacetedFilterOption {
@@ -18,22 +19,21 @@ interface DataTableFacetedFilterOption {
   value: string
 }
 
-interface DataTableFacetedFilterProps<TData, TValue> {
-  column?: Column<TData, TValue>
+interface DataTableFacetedFilterProps<TData extends RowData, TValue> {
+  column?: Column<ClaimsTableFeatures, TData, TValue>
   title: string
   options: DataTableFacetedFilterOption[]
+  selectedValues: string[]
 }
 
-export function DataTableFacetedFilter<TData, TValue>({
+export function DataTableFacetedFilter<TData extends RowData, TValue>({
   column,
   title,
   options,
-}: DataTableFacetedFilterProps<TData, TValue>) {
-  // eslint-disable-next-line react-compiler/react-compiler -- TanStack Table's column/table objects are stable-but-mutable; compiler memoization causes stale UI (verified empirically: selected-option badges didn't appear after filtering).
-  // 'use no memo'
-
+  selectedValues: selectedValuesProp,
+}: Readonly<DataTableFacetedFilterProps<TData, TValue>>) {
   const facets = column?.getFacetedUniqueValues()
-  const selectedValues = new Set(column?.getFilterValue() as string[])
+  const selectedValues = new Set(selectedValuesProp)
 
   console.log('[render] DataTableFacetedFilter', title, selectedValues, facets)
 

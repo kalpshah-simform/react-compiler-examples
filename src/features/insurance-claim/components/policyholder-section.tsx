@@ -1,11 +1,11 @@
-import { useFormContext, useFormState } from 'react-hook-form'
+import { Controller, useFormContext, useFormState } from 'react-hook-form'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { FormField } from '@/features/insurance-claim/components/form-field'
 import type { InsuranceClaimFormInput } from '@/features/insurance-claim/schema'
 
 export function PolicyholderSection() {
-  const { register, control } = useFormContext<InsuranceClaimFormInput>()
+  const { control } = useFormContext<InsuranceClaimFormInput>()
   const { errors } = useFormState({ control })
 
   return (
@@ -20,10 +20,16 @@ export function PolicyholderSection() {
           required
           error={errors.policyholder?.fullName?.message}
         >
-          <Input
-            id="policyholder.fullName"
-            autoComplete="name"
-            {...register('policyholder.fullName')}
+          <Controller
+            control={control}
+            name="policyholder.fullName"
+            render={({ field }) => (
+              <Input
+                id="policyholder.fullName"
+                autoComplete="name"
+                {...field}
+              />
+            )}
           />
         </FormField>
 
@@ -33,11 +39,17 @@ export function PolicyholderSection() {
           required
           error={errors.policyholder?.email?.message}
         >
-          <Input
-            id="policyholder.email"
-            type="email"
-            autoComplete="email"
-            {...register('policyholder.email')}
+          <Controller
+            control={control}
+            name="policyholder.email"
+            render={({ field }) => (
+              <Input
+                id="policyholder.email"
+                type="email"
+                autoComplete="email"
+                {...field}
+              />
+            )}
           />
         </FormField>
 
@@ -47,12 +59,18 @@ export function PolicyholderSection() {
           required
           error={errors.policyholder?.phone?.message}
         >
-          <Input
-            id="policyholder.phone"
-            type="tel"
-            autoComplete="tel"
-            placeholder="+1 555 123 4567"
-            {...register('policyholder.phone')}
+          <Controller
+            control={control}
+            name="policyholder.phone"
+            render={({ field }) => (
+              <Input
+                id="policyholder.phone"
+                type="tel"
+                autoComplete="tel"
+                placeholder="+1 555 123 4567"
+                {...field}
+              />
+            )}
           />
         </FormField>
 
@@ -62,10 +80,16 @@ export function PolicyholderSection() {
           required
           error={errors.policyholder?.policyNumber?.message}
         >
-          <Input
-            id="policyholder.policyNumber"
-            placeholder="POL-2024-000123"
-            {...register('policyholder.policyNumber')}
+          <Controller
+            control={control}
+            name="policyholder.policyNumber"
+            render={({ field }) => (
+              <Input
+                id="policyholder.policyNumber"
+                placeholder="POL-2024-000123"
+                {...field}
+              />
+            )}
           />
         </FormField>
 
@@ -75,10 +99,12 @@ export function PolicyholderSection() {
           required
           error={errors.policyholder?.dateOfBirth?.message}
         >
-          <Input
-            id="policyholder.dateOfBirth"
-            type="date"
-            {...register('policyholder.dateOfBirth')}
+          <Controller
+            control={control}
+            name="policyholder.dateOfBirth"
+            render={({ field }) => (
+              <Input id="policyholder.dateOfBirth" type="date" {...field} />
+            )}
           />
         </FormField>
       </CardContent>

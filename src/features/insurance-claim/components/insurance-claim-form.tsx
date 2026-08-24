@@ -50,7 +50,11 @@ const sampleValues: InsuranceClaimFormInput = {
   },
   damagedItems: [{ description: 'Rear bumper', estimatedValue: '850' }],
   witnesses: [
-    { name: 'Taylor Chen', phone: '+15552223333', statement: 'Saw the other car fail to stop in time.' },
+    {
+      name: 'Taylor Chen',
+      phone: '+15552223333',
+      statement: 'Saw the other car fail to stop in time.',
+    },
   ],
   additional: {
     contactPreference: 'email',
@@ -107,6 +111,8 @@ export function InsuranceClaimForm() {
     mode: 'onBlur',
     reValidateMode: 'onChange',
   })
+
+  console.log('form state', form.formState)
 
   async function onSubmit(values: InsuranceClaimFormValues) {
     setSubmitError(null)
