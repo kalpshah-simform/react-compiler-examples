@@ -1,9 +1,10 @@
-import type { Table } from '@tanstack/react-table'
+import type { ReactTable } from '@tanstack/react-table'
 import { Trash2, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { DataTableFacetedFilter } from '@/components/data-table/data-table-faceted-filter'
 import { DataTableViewOptions } from '@/components/data-table/data-table-view-options'
+import type { ClaimsTableFeatures } from '@/features/claims/components/table-features'
 import {
   PRIORITY_OPTIONS,
   STATUS_OPTIONS,
@@ -12,10 +13,20 @@ import {
 import type { Claim } from '@/features/claims/types'
 
 interface ClaimsTableToolbarProps {
-  table: Table<Claim>
+  table: ReactTable<ClaimsTableFeatures, Claim>
   globalFilter: string
   onGlobalFilterChange: (value: string) => void
   onDeleteSelected: () => void
+}
+
+function getColumnFilterValues(
+  table: ReactTable<ClaimsTableFeatures, Claim>,
+  columnId: string,
+): string[] {
+  return (
+    (table.state.columnFilters.find((filter) => filter.id === columnId)
+      ?.value as string[] | undefined) ?? []
+  )
 }
 
 export function ClaimsTableToolbar({
@@ -24,11 +35,8 @@ export function ClaimsTableToolbar({
   onGlobalFilterChange,
   onDeleteSelected,
 }: ClaimsTableToolbarProps) {
-  // eslint-disable-next-line react-compiler/react-compiler -- TanStack Table's column/table objects are stable-but-mutable; compiler memoization causes stale UI (verified empirically: the Reset button didn't appear after filtering).
-  // 'use no memo'
-
   const isFiltered =
-    table.getState().columnFilters.length > 0 || globalFilter.length > 0
+    table.state.columnFilters.length > 0 || globalFilter.length > 0
   const selectedCount = table.getFilteredSelectedRowModel().rows.length
   const statusColumn = table.getColumn('status')
 
@@ -46,18 +54,21 @@ export function ClaimsTableToolbar({
           key="status-filter"
           title="Status"
           options={STATUS_OPTIONS}
+          selectedValues={getColumnFilterValues(table, 'status')}
         />
         <DataTableFacetedFilter
           key="type-filter"
           column={table.getColumn('claimType')}
           title="Type"
           options={TYPE_OPTIONS}
+          selectedValues={getColumnFilterValues(table, 'claimType')}
         />
         <DataTableFacetedFilter
           key="priority-filter"
           column={table.getColumn('priority')}
           title="Priority"
           options={PRIORITY_OPTIONS}
+          selectedValues={getColumnFilterValues(table, 'priority')}
         />
         {isFiltered ? (
           <Button

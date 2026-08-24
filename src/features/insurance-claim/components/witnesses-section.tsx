@@ -1,5 +1,10 @@
 import { Plus, Trash2 } from 'lucide-react'
-import { useFieldArray, useFormContext, useFormState } from 'react-hook-form'
+import {
+  Controller,
+  useFieldArray,
+  useFormContext,
+  useFormState,
+} from 'react-hook-form'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -8,7 +13,7 @@ import { FormField } from '@/features/insurance-claim/components/form-field'
 import type { InsuranceClaimFormInput } from '@/features/insurance-claim/schema'
 
 export function WitnessesSection() {
-  const { register, control } = useFormContext<InsuranceClaimFormInput>()
+  const { control } = useFormContext<InsuranceClaimFormInput>()
   const { errors } = useFormState({ control })
 
   const { fields, append, remove } = useFieldArray({
@@ -34,30 +39,39 @@ export function WitnessesSection() {
             className="grid gap-4 rounded-lg border border-border p-4"
           >
             <div className="grid gap-4 sm:grid-cols-[1fr_1fr_auto] sm:items-end">
-              <FormField
-                label="Name"
-                htmlFor={`witnesses.${index}.name`}
-                required
-                error={errors.witnesses?.[index]?.name?.message}
-              >
-                <Input
-                  id={`witnesses.${index}.name`}
-                  {...register(`witnesses.${index}.name`)}
-                />
-              </FormField>
+              <Controller
+                control={control}
+                name={`witnesses.${index}.name`}
+                render={({ field, fieldState }) => (
+                  <FormField
+                    label="Name"
+                    htmlFor={`witnesses.${index}.name`}
+                    required
+                    error={fieldState.error?.message}
+                  >
+                    <Input id={`witnesses.${index}.name`} {...field} />
+                  </FormField>
+                )}
+              />
 
-              <FormField
-                label="Phone"
-                htmlFor={`witnesses.${index}.phone`}
-                required
-                error={errors.witnesses?.[index]?.phone?.message}
-              >
-                <Input
-                  id={`witnesses.${index}.phone`}
-                  type="tel"
-                  {...register(`witnesses.${index}.phone`)}
-                />
-              </FormField>
+              <Controller
+                control={control}
+                name={`witnesses.${index}.phone`}
+                render={({ field, fieldState }) => (
+                  <FormField
+                    label="Phone"
+                    htmlFor={`witnesses.${index}.phone`}
+                    required
+                    error={fieldState.error?.message}
+                  >
+                    <Input
+                      id={`witnesses.${index}.phone`}
+                      type="tel"
+                      {...field}
+                    />
+                  </FormField>
+                )}
+              />
 
               <Button
                 type="button"
@@ -70,17 +84,23 @@ export function WitnessesSection() {
               </Button>
             </div>
 
-            <FormField
-              label="Statement"
-              htmlFor={`witnesses.${index}.statement`}
-              error={errors.witnesses?.[index]?.statement?.message}
-            >
-              <Textarea
-                id={`witnesses.${index}.statement`}
-                rows={2}
-                {...register(`witnesses.${index}.statement`)}
-              />
-            </FormField>
+            <Controller
+              control={control}
+              name={`witnesses.${index}.statement`}
+              render={({ field, fieldState }) => (
+                <FormField
+                  label="Statement"
+                  htmlFor={`witnesses.${index}.statement`}
+                  error={fieldState.error?.message}
+                >
+                  <Textarea
+                    id={`witnesses.${index}.statement`}
+                    rows={2}
+                    {...field}
+                  />
+                </FormField>
+              )}
+            />
           </div>
         ))}
 

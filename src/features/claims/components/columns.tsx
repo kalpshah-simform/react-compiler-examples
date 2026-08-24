@@ -4,6 +4,7 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { ClaimRowActions } from '@/features/claims/components/claim-row-actions'
 import { ClaimStatusBadge } from '@/features/claims/components/claim-status-badge'
 import type { ClaimsTableMeta } from '@/features/claims/components/claims-table-meta'
+import type { ClaimsTableFeatures } from '@/features/claims/components/table-features'
 import {
   CLAIM_PRIORITY_LABELS,
   CLAIM_TYPE_LABELS,
@@ -12,14 +13,16 @@ import {
 } from '@/features/claims/format'
 import type { Claim } from '@/features/claims/types'
 
-function optionsFilter<TData>(): ColumnDef<TData>['filterFn'] {
+function optionsFilter(): ColumnDef<ClaimsTableFeatures, Claim>['filterFn'] {
   return (row, columnId, filterValue: string[]) => {
     if (!filterValue?.length) return true
     return filterValue.includes(row.getValue(columnId))
   }
 }
 
-export function createClaimColumns(meta: ClaimsTableMeta): ColumnDef<Claim>[] {
+export function createClaimColumns(
+  meta: ClaimsTableMeta,
+): ColumnDef<ClaimsTableFeatures, Claim>[] {
   return [
     {
       id: 'select',

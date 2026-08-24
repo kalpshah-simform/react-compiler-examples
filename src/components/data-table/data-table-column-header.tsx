@@ -1,4 +1,4 @@
-import type { Column } from '@tanstack/react-table'
+import type { Column, RowData } from '@tanstack/react-table'
 import { ArrowDown, ArrowUp, ChevronsUpDown, EyeOff } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
@@ -8,22 +8,20 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import type { ClaimsTableFeatures } from '@/features/claims/components/table-features'
 import { cn } from '@/lib/utils'
 
-interface DataTableColumnHeaderProps<TData, TValue> {
-  column: Column<TData, TValue>
+interface DataTableColumnHeaderProps<TData extends RowData, TValue> {
+  column: Column<ClaimsTableFeatures, TData, TValue>
   title: string
   className?: string
 }
 
-export function DataTableColumnHeader<TData, TValue>({
+export function DataTableColumnHeader<TData extends RowData, TValue>({
   column,
   title,
   className,
-}: DataTableColumnHeaderProps<TData, TValue>) {
-  // eslint-disable-next-line react-compiler/react-compiler -- TanStack Table's column/table objects are stable-but-mutable; compiler memoization causes stale UI (verified empirically, see data-table-pagination.tsx for a reproduction).
-  // 'use no memo'
-
+}: Readonly<DataTableColumnHeaderProps<TData, TValue>>) {
   console.log('[render] DataTableColumnHeader', title, column.getIsSorted())
 
   if (!column.getCanSort()) {

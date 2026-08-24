@@ -1,16 +1,10 @@
 import {
   flexRender,
-  getCoreRowModel,
-  getFacetedRowModel,
-  getFacetedUniqueValues,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useReactTable,
+  useTable,
   type ColumnFiltersState,
+  type ColumnVisibilityState,
   type RowSelectionState,
   type SortingState,
-  type VisibilityState,
 } from '@tanstack/react-table'
 import { useEffect, useState } from 'react'
 import {
@@ -30,20 +24,22 @@ import {
 import { ClaimDetailsDialog } from '@/features/claims/components/claim-details-dialog'
 import { createClaimColumns } from '@/features/claims/components/columns'
 import { ClaimsTableToolbar } from '@/features/claims/components/claims-table-toolbar'
+import { claimsTableFeatures } from '@/features/claims/components/table-features'
 import type { Claim } from '@/features/claims/types'
 
 export function ClaimsTable() {
-  // Discussion point: TanStack Table's column/table objects are stable-but-mutable; compiler memoization causes stale UI (verified empirically: "Page X of Y" froze while the disabled state of the next/prev buttons updated correctly in the same render).
-  // What is happening here is that the table object is being memoized by the compiler, which means that it doesn't re-render when its internal state changes. This can lead to stale UI, where some parts of the UI update correctly while others do not. To avoid this issue, we are not using memoization for the table object in this component.
-  // This is temporary and should be revisited in the future to see if there is a better solution that allows for memoization without causing stale UI.
-  // Github issue link: https://github.com/TanStack/table/issues/5567
+  // Discussion point: on TanStack Table v8, the table instance was stable-but-mutable,
+  // which broke React Compiler's memoization (stale "Page X of Y" text, etc. — see
+  // https://github.com/TanStack/table/issues/5567). TanStack Table v9 fixed this
+  // (the issue was closed as resolved), so this component can be memoized normally.
   const [data, setData] = useState<Claim[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [loadError, setLoadError] = useState<string | null>(null)
 
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
+  const [columnVisibility, setColumnVisibility] =
+    useState<ColumnVisibilityState>({})
   const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
   const [globalFilter, setGlobalFilter] = useState('')
 
@@ -116,7 +112,8 @@ export function ClaimsTable() {
     },
   })
 
-  const table = useReactTable({
+  const table = useTable({
+    features: claimsTableFeatures,
     data,
     columns,
     getRowId: (row) => row.id,
@@ -132,12 +129,6 @@ export function ClaimsTable() {
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
     onGlobalFilterChange: setGlobalFilter,
-    getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getFacetedRowModel: getFacetedRowModel(),
-    getFacetedUniqueValues: getFacetedUniqueValues(),
   })
 
   console.log('[render] ClaimsTable', {

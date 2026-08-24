@@ -1,4 +1,4 @@
-import type { Table } from '@tanstack/react-table'
+import type { ReactTable, RowData } from '@tanstack/react-table'
 import {
   ChevronLeft,
   ChevronRight,
@@ -13,22 +13,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import type { ClaimsTableFeatures } from '@/features/claims/components/table-features'
 
 const PAGE_SIZE_OPTIONS = [10, 20, 30, 50]
 
-interface DataTablePaginationProps<TData> {
-  table: Table<TData>
+interface DataTablePaginationProps<TData extends RowData> {
+  table: ReactTable<ClaimsTableFeatures, TData>
 }
 
-export function DataTablePagination<TData>({
+export function DataTablePagination<TData extends RowData>({
   table,
 }: DataTablePaginationProps<TData>) {
-  // eslint-disable-next-line react-compiler/react-compiler -- TanStack Table's column/table objects are stable-but-mutable; compiler memoization causes stale UI (verified empirically: "Page X of Y" froze while the disabled state of the next/prev buttons updated correctly in the same render).
-  // 'use no memo'
-
   const selectedCount = table.getFilteredSelectedRowModel().rows.length
   const totalCount = table.getFilteredRowModel().rows.length
-  const pageIndex = table.getState().pagination.pageIndex
+  const pageIndex = table.state.pagination.pageIndex
   const pageCount = table.getPageCount()
 
   console.log(
@@ -48,7 +46,7 @@ export function DataTablePagination<TData>({
         <div className="flex items-center gap-2">
           <span className="text-muted-foreground">Rows per page</span>
           <Select
-            value={`${table.getState().pagination.pageSize}`}
+            value={`${table.state.pagination.pageSize}`}
             onValueChange={(value) => table.setPageSize(Number(value))}
           >
             <SelectTrigger className="h-7 w-[70px]">

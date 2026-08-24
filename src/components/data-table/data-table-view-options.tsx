@@ -1,4 +1,4 @@
-import type { Table } from '@tanstack/react-table'
+import type { RowData, Table } from '@tanstack/react-table'
 import { SlidersHorizontal } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
@@ -9,17 +9,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import type { ClaimsTableFeatures } from '@/features/claims/components/table-features'
 
-interface DataTableViewOptionsProps<TData> {
-  table: Table<TData>
+interface DataTableViewOptionsProps<TData extends RowData> {
+  table: Table<ClaimsTableFeatures, TData>
 }
 
-export function DataTableViewOptions<TData>({
+export function DataTableViewOptions<TData extends RowData>({
   table,
 }: DataTableViewOptionsProps<TData>) {
-  // eslint-disable-next-line react-compiler/react-compiler -- TanStack Table's column/table objects are stable-but-mutable; compiler memoization causes stale UI (verified empirically, see data-table-pagination.tsx for a reproduction).
-  // 'use no memo'
-
   const hideableColumns = table
     .getAllColumns()
     .filter((column) => column.getCanHide())

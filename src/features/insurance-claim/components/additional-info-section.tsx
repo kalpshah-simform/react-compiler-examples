@@ -8,7 +8,7 @@ import { FormField } from '@/features/insurance-claim/components/form-field'
 import type { InsuranceClaimFormInput } from '@/features/insurance-claim/schema'
 
 export function AdditionalInfoSection() {
-  const { register, control } = useFormContext<InsuranceClaimFormInput>()
+  const { control } = useFormContext<InsuranceClaimFormInput>()
   const { errors } = useFormState({ control })
 
   return (
@@ -49,11 +49,17 @@ export function AdditionalInfoSection() {
           htmlFor="additional.notes"
           error={errors.additional?.notes?.message}
         >
-          <Textarea
-            id="additional.notes"
-            rows={3}
-            placeholder="Anything else the claims adjuster should know?"
-            {...register('additional.notes')}
+          <Controller
+            control={control}
+            name="additional.notes"
+            render={({ field }) => (
+              <Textarea
+                id="additional.notes"
+                rows={3}
+                placeholder="Anything else the claims adjuster should know?"
+                {...field}
+              />
+            )}
           />
         </FormField>
 

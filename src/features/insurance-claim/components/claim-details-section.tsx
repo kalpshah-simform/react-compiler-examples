@@ -42,14 +42,28 @@ export function ClaimDetailsSection() {
   // and the compiler can skip re-executing this component when it memoizes it.
   // `useFormState` uses an external store subscription instead, which stays compatible
   // with the compiler's memoization. reference: https://react-hook-form.com/docs/useformstate
-  const { register, control } = useFormContext<InsuranceClaimFormInput>()
+
+  // Second discussion point:
+  // Even with `useFormState`, `form.reset()` still failed to clear the plain
+  // `register()`-bound inputs below. React Compiler memoizes the call to
+  // `register(name)` itself, keyed on the (referentially stable) `register`
+  // function, so it never re-invokes it and reuses the same cached `ref`
+  // callback across renders. `register()` is not a pure call though: `reset()`
+  // relies on a *fresh* `ref` callback being handed to React so it re-syncs the
+  // uncontrolled input's DOM value from the new form state. Since the compiler
+  // treats it as memoizable, that resync never happens. Controller/useController
+  // fields aren't affected, since they read `field.value` from a normal render
+  // value rather than an uncontrolled DOM ref, so we use Controller here too.
+  const { control } = useFormContext<InsuranceClaimFormInput>()
   const { errors } = useFormState({ control })
 
+  console.log('form state claim details section', errors)
   const claimType = useWatch({ control, name: 'claim.claimType' })
   const policeReportFiled = useWatch({
     control,
     name: 'claim.policeReportFiled',
   })
+
 
   return (
     <Card>
@@ -90,10 +104,12 @@ export function ClaimDetailsSection() {
             required
             error={errors.claim?.incidentDate?.message}
           >
-            <Input
-              id="claim.incidentDate"
-              type="date"
-              {...register('claim.incidentDate')}
+            <Controller
+              control={control}
+              name="claim.incidentDate"
+              render={({ field }) => (
+                <Input id="claim.incidentDate" type="date" {...field} />
+              )}
             />
           </FormField>
         </div>
@@ -105,10 +121,12 @@ export function ClaimDetailsSection() {
           description="Describe what happened in at least 20 characters."
           error={errors.claim?.incidentDescription?.message}
         >
-          <Textarea
-            id="claim.incidentDescription"
-            rows={4}
-            {...register('claim.incidentDescription')}
+          <Controller
+            control={control}
+            name="claim.incidentDescription"
+            render={({ field }) => (
+              <Textarea id="claim.incidentDescription" rows={4} {...field} />
+            )}
           />
         </FormField>
 
@@ -137,9 +155,12 @@ export function ClaimDetailsSection() {
             className="sm:max-w-xs"
             error={errors.claim?.policeReportNumber?.message}
           >
-            <Input
-              id="claim.policeReportNumber"
-              {...register('claim.policeReportNumber')}
+            <Controller
+              control={control}
+              name="claim.policeReportNumber"
+              render={({ field }) => (
+                <Input id="claim.policeReportNumber" {...field} />
+              )}
             />
           </FormField>
         ) : null}
